@@ -1,23 +1,28 @@
 # agentic-sql
 
-Comparing ways of building one software component.
+A test harness for comparing ways of answering natural-language questions over a
+SQL database.
 
-The component is a query layer over a SQL database: a natural-language question
-goes in, an answer comes out. The question under test is whether decision logic
-that is normally written as code can instead be made at runtime by a small
-language model, and how small that model can be.
+The task stays the same throughout: a question goes in, the system produces a SQL
+query, the query runs against the database, and the resulting rows are compared
+against a hand-written correct answer. What changes is how the system is built.
+Each configuration differs from the previous one in a single way, so the
+comparison isolates that one change.
 
-Built on the Agentic Software framing (Cao, arXiv 2606.05608v2). Traditional
-software is `S = (C, D, E)` with static decision logic `D`. An agent is
-`A = (M, T, 𝓜, Π)`. So `D` can live in four places, and this repo measures the
-difference between them:
-
-| Where D lives | Arm |
+| Configuration | What it is |
 |---|---|
-| In code `C` | hand-written patterns to SQL templates |
-| In the weights `M` | the model answering in one shot, no tools |
-| Discovered through tools `T` | the model in a loop that can query the database |
-| In persistent memory `𝓜` | the loop, carrying verified queries across questions |
+| templates | Hand-written regex patterns mapped to SQL. No model involved. |
+| oneshot | The model sees the table names and writes one query. No tools, no retries. |
+| loop | The same model can run queries, read the rows, and try again. |
+| loop + adapter | The same loop, with a fine-tuned LoRA adapter on the model. |
+| loop + memory | The same loop, carrying queries that worked across questions. |
+
+Each of these can run with thinking on or off, and against either a local model
+or an API model. Those options make up the rest of the grid.
+
+For every question the harness records whether the answer was correct, how long
+it took, input and output tokens, how many times the model was called, how many
+queries it ran, how many of those were distinct, and how many SQL errors it hit.
 
 ## Quick start
 
@@ -26,48 +31,48 @@ pip install -r requirements.txt
 python data/verify_dataset.py          # builds Chinook.db, checks every gold query
 export PYTHONPATH=src
 
-python -m agsql.cli arms               # what is defined
-python -m agsql.cli run --arm all --smoke   # 1 question per arm. always do this first
-python -m agsql.cli run --arm all      # the grid
+python -m agsql.cli arms               # list the configurations
+python -m agsql.cli run --arm all --smoke   # one question per configuration
+python -m agsql.cli run --arm all      # the full grid
 python -m agsql.cli report             # the tables
 ```
 
-`--smoke` is not optional in spirit. It runs one question through every arm in a
-couple of minutes and catches the broken-backend and broken-protocol failures
-that otherwise surface an hour into a run.
+Start with `--smoke`. It runs one question through every configuration in about
+two minutes, which is usually enough to catch a misconfigured backend or a
+prompt the model ignores. Those problems are much cheaper to find there than an
+hour into a full run.
 
 ## Layout
 
 ```
 data/        the question set, frozen. See data/DATASET.md
-configs/     grid.yaml: one entry per cell of the chart
+configs/     grid.yaml: one entry per configuration being measured
 src/agsql/
   dataset.py   loading questions and deterministic subsets
   grading.py   execute both queries, compare rows. No model grades a model
   metrics.py   aggregation and the two report tables
-  memory.py    persistent memory across questions
-  runner.py    run one arm, checkpointing after every question
+  memory.py    carrying verified queries across questions
+  runner.py    run one configuration, checkpointing after every question
   cli.py       entry point
   backends/    how a model is served: transformers, Ollama, Anthropic, mock
   setups/      what scaffold it runs in: templates, oneshot, loop
-results/     one json per arm, per-question records. Committed
-report/       generated tables
+results/     one json per configuration, with per-question records. Committed
+report/      generated tables
 ```
 
-### Backends and setups are separate on purpose
+### Why backends and setups are separate
 
-A **backend** is how a model is served. A **setup** is the scaffold it runs in.
-Keeping them apart is the main structural lesson from the previous phase, where
-the fine-tuned model could only be served through transformers while the agent
-ran on Ollama, and the two ended up compared as though the only difference were
-the fine-tune. Changing the serving path should never silently change the
-scaffold.
+A backend is how a model is served. A setup is the scaffold it runs inside.
 
-## Adding an arm
+They are separate modules because of a problem in earlier work. The fine-tuned
+model could only be served through transformers, while the agent ran on Ollama,
+so two configurations differed in both the scaffold and the serving path even
+though they were compared as though only the fine-tune had changed. Splitting the
+two means you cannot change one by accident while meaning to change the other.
 
-Add an entry to `configs/grid.yaml`. Nothing else. Arms are named in the config
-and never spelled out on the command line for a real run, so the chart is
-reproducible from the repo rather than from someone's shell history.
+## Adding a configuration
+
+Add an entry to `configs/grid.yaml`:
 
 ```yaml
   qwen8b-loop:
@@ -79,43 +84,48 @@ reproducible from the repo rather than from someone's shell history.
       model_id: Qwen/Qwen3.5-8B
 ```
 
-## Metrics
+Configurations live in the config file rather than in command-line flags, so the
+grid can be reproduced from the repo instead of from someone's shell history.
 
-Per question: correct, loose, wall time, input and output tokens, model calls,
-queries, distinct queries, SQL errors, plus the full query trajectory.
+## Reading the numbers
 
-- **correct** is an exact row match. **loose** also counts a right answer in the
-  wrong shape, e.g. returning `(Iron Maiden, 213)` where the gold returns the
-  name alone. A numerically near miss is not loose.
-- **queries** counts every query run; **uniq_q** counts distinct ones. The gap is
-  the model repeating itself, which is a termination failure rather than the cost
-  of discovering a schema, and worth reporting separately.
-- Cost columns are per-question averages over 43 observations and are
-  considerably more stable than accuracy. At n=43 a single accuracy figure
-  carries roughly ±15 points of 95% CI, so differences smaller than that are not
-  conclusive on their own. Because every arm runs the identical questions,
-  comparisons between arms are paired and tighter than that figure suggests.
+`correct` means the returned rows match the expected rows exactly. `loose` also
+counts a right answer in the wrong shape, such as returning `(Iron Maiden, 213)`
+where the expected answer is just the name. A numerically close answer does not
+count as loose.
+
+`queries` counts every query the model ran, and `uniq_q` counts the distinct
+ones. When those two numbers diverge, the model was repeating itself, which is a
+failure to stop rather than the cost of exploring an unfamiliar schema. They are
+reported separately for that reason.
+
+The cost columns are per-question averages and are more stable than accuracy. At
+43 questions, a single accuracy figure carries roughly ±15 points of 95%
+confidence interval, so smaller differences are not conclusive by themselves.
+Every configuration runs the same questions, which makes comparisons between them
+paired and somewhat tighter than that figure suggests.
 
 ## Running on Colab
 
-`notebooks/colab_runner.ipynb` clones this repo, installs, and calls the CLI.
-Results are written to Drive so a disconnect does not lose them. Arms are ordered
-cheap first in the grid, so a run that dies partway still leaves most of the chart,
-and rerunning the same command resumes from the per-question checkpoint.
+`notebooks/colab_runner.ipynb` clones the repo, installs it, and calls the CLI.
+Results are written to Drive so that a disconnect does not lose them. The grid
+runs cheapest configurations first, so a run that dies partway through still
+leaves most of the chart, and rerunning the same command picks up from the last
+completed question.
 
 ## Status
 
-The dataset and harness are in place and tested. The 2b adapter has not been
-trained yet, so the tuned arms will skip until `sql_adapter_2b` exists. The
-Anthropic arms skip unless `ANTHROPIC_API_KEY` and `AGSQL_ANTHROPIC_MODEL` are
-set. Prior results and their caveats are written up in the project docs rather
-than here.
+The dataset and harness are working, with 26 tests that run without a GPU. The 2b
+adapter has not been trained yet, so the adapter configurations will skip until it
+exists. The Anthropic configurations skip unless `ANTHROPIC_API_KEY` and
+`AGSQL_ANTHROPIC_MODEL` are set.
 
-One finding from the previous phase is unexplained and worth knowing before
-reading any numbers: a LangGraph agent on Ollama, untuned, substantially
-outperformed the hand-written loop on the same weights. Turning thinking on in
-the loop closed about a third of that gap at five times the cost, so reasoning is
-not the explanation. The leading suspect is the tool-calling interface, since
-structured tool calls cannot be corrupted by surrounding prose while a text
-protocol can, and several failures were exactly that. A structured-tool-call
-setup is the next thing to add here.
+One result from earlier work has not been explained and is worth knowing before
+reading any numbers here. A LangGraph agent running on Ollama, with no
+fine-tuning, scored considerably higher than the hand-written loop on the same
+model weights. Turning thinking on in the loop closed about a third of that gap
+while costing five times as much, so reasoning does not account for it. The most
+likely remaining explanation is the tool-calling interface: structured tool calls
+cannot be corrupted by surrounding prose, while a text protocol can, and several
+of the failures were exactly that. Adding a structured-tool-call setup is the
+next step.

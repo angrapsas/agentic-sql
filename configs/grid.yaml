@@ -22,7 +22,7 @@ arms:
     label: "1 no-model"
     backend: none
     setup: templates
-    note: "static decision logic in code. 0 min."
+    note: "hand-written patterns, no model. 0 min."
 
   qwen2b-oneshot:
     label: "2 model alone"
@@ -94,7 +94,7 @@ arms:
     backend_args:
       model_id: Qwen/Qwen3.5-2B
       adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
-    note: "memory and fine-tuning are competing ways to make D persistent. ~5 min."
+    note: "both the adapter and memory on, to see whether they add up. ~5 min."
 
   # ---- frontier ceiling ----
 

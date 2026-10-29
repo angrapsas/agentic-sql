@@ -1,15 +1,15 @@
-"""agsql: comparing ways of building one software component.
+"""agsql: a test harness for comparing ways of answering questions over a SQL database.
 
-The component is a query layer over a SQL database: a question goes in, an answer
-comes out. The question is whether decision logic normally written as code can be
-replaced by a small model making those decisions at runtime.
+A question goes in, the system produces a query, the query runs, and the rows are
+compared against a hand-written correct answer. What varies is how the system is
+built, and each configuration changes one thing from the last.
 
 Two axes are kept deliberately separate:
 
   backends  how a model is served (transformers, Ollama, an API)
   setups    what scaffold it runs in (templates, one shot, a tool loop)
 
-Mixing those two is what made phase 3's results hard to interpret.
+Conflating those two made earlier results hard to interpret.
 """
 
 __version__ = "0.1.0"

@@ -1,9 +1,8 @@
 """No model at all: hand-written patterns mapped to SQL templates.
 
-This is the Def 2.1 baseline from the Agentic Software framing: the decision
-logic D is static and lives in code. It is perfect on the phrasings it
-anticipated and scores zero on everything else, which is the property being
-illustrated rather than a weakness of the baseline.
+The baseline a developer would write by hand. It is perfect on the phrasings it
+anticipated and scores zero on everything else, which is the behaviour worth
+measuring rather than a weakness of the baseline.
 
 Note when reporting: it scores the unanswerable questions correctly for free,
 because it emits nothing for anything it does not match, and emitting nothing is
