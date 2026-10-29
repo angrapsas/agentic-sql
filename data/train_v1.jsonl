@@ -1,0 +1,164 @@
+{"question": "Who wrote the track 'Be Mine'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Be Mine'"}
+{"question": "How long is the track 'Be Mine' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Be Mine'"}
+{"question": "Who wrote the track 'Montsegur'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Montsegur'"}
+{"question": "How long is the track 'Montsegur' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Montsegur'"}
+{"question": "Who wrote the track 'The Show Must Go On'?", "sql": "SELECT Composer FROM Track WHERE Name = 'The Show Must Go On'"}
+{"question": "How long is the track 'The Show Must Go On' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'The Show Must Go On'"}
+{"question": "Who wrote the track 'The Angel And The Gambler'?", "sql": "SELECT Composer FROM Track WHERE Name = 'The Angel And The Gambler'"}
+{"question": "How long is the track 'The Angel And The Gambler' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'The Angel And The Gambler'"}
+{"question": "Who wrote the track 'Mr Funk Samba'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Mr Funk Samba'"}
+{"question": "How long is the track 'Mr Funk Samba' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Mr Funk Samba'"}
+{"question": "Who wrote the track 'Bullet With Butterfly Wings'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Bullet With Butterfly Wings'"}
+{"question": "How long is the track 'Bullet With Butterfly Wings' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Bullet With Butterfly Wings'"}
+{"question": "Who wrote the track 'Midnight From The Inside Out'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Midnight From The Inside Out'"}
+{"question": "How long is the track 'Midnight From The Inside Out' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Midnight From The Inside Out'"}
+{"question": "Who wrote the track 'Lindo Lago Do Amor'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Lindo Lago Do Amor'"}
+{"question": "How long is the track 'Lindo Lago Do Amor' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Lindo Lago Do Amor'"}
+{"question": "Who wrote the track 'Heredit\u00e1rio'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Heredit\u00e1rio'"}
+{"question": "How long is the track 'Heredit\u00e1rio' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Heredit\u00e1rio'"}
+{"question": "Who wrote the track 'Run To The Hilss'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Run To The Hilss'"}
+{"question": "How long is the track 'Run To The Hilss' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Run To The Hilss'"}
+{"question": "Who wrote the track 'Princess of the Dawn'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Princess of the Dawn'"}
+{"question": "How long is the track 'Princess of the Dawn' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Princess of the Dawn'"}
+{"question": "Who wrote the track 'Rebeli\u00e3o'?", "sql": "SELECT Composer FROM Track WHERE Name = 'Rebeli\u00e3o'"}
+{"question": "How long is the track 'Rebeli\u00e3o' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'Rebeli\u00e3o'"}
+{"question": "Who wrote the track 'The Loneliness of the Long Dis'?", "sql": "SELECT Composer FROM Track WHERE Name = 'The Loneliness of the Long Dis'"}
+{"question": "How long is the track 'The Loneliness of the Long Dis' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'The Loneliness of the Long Dis'"}
+{"question": "Who wrote the track 'C\u00e9rebro Eletr\u00f4nico'?", "sql": "SELECT Composer FROM Track WHERE Name = 'C\u00e9rebro Eletr\u00f4nico'"}
+{"question": "How long is the track 'C\u00e9rebro Eletr\u00f4nico' in milliseconds?", "sql": "SELECT Milliseconds FROM Track WHERE Name = 'C\u00e9rebro Eletr\u00f4nico'"}
+{"question": "Which artist released the album 'Temple of the Dog'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Temple of the Dog'"}
+{"question": "Which artist released the album 'Tchaikovsky: The Nutcracker'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Tchaikovsky: The Nutcracker'"}
+{"question": "Which artist released the album 'Faur\u00e9: Requiem, Ravel: Pavane & Others'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Faur\u00e9: Requiem, Ravel: Pavane & Others'"}
+{"question": "Which artist released the album 'Chronicle, Vol. 2'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Chronicle, Vol. 2'"}
+{"question": "Which artist released the album 'Live On Two Legs [Live]'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Live On Two Legs [Live]'"}
+{"question": "Which artist released the album 'A TempestadeTempestade Ou O Livro Dos Dias'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'A TempestadeTempestade Ou O Livro Dos Dias'"}
+{"question": "Which artist released the album 'Dance Of Death'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Dance Of Death'"}
+{"question": "Which artist released the album 'Vin\u00edcius De Moraes - Sem Limite'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Vin\u00edcius De Moraes - Sem Limite'"}
+{"question": "Which artist released the album 'Sex Machine'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Sex Machine'"}
+{"question": "Which artist released the album 'From The Muddy Banks Of The Wishkah [Live]'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'From The Muddy Banks Of The Wishkah [Live]'"}
+{"question": "Which artist released the album 'Lulu Santos - RCA 100 Anos De M\u00fasica - \u00c1lbum 01'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Lulu Santos - RCA 100 Anos De M\u00fasica - \u00c1lbum 01'"}
+{"question": "Which artist released the album 'Milton Nascimento Ao Vivo'?", "sql": "SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId WHERE al.Title = 'Milton Nascimento Ao Vivo'"}
+{"question": "How many customers live in Belgium?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Belgium'"}
+{"question": "What is the total amount invoiced to Belgium?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Belgium'"}
+{"question": "How many customers live in Poland?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Poland'"}
+{"question": "What is the total amount invoiced to Poland?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Poland'"}
+{"question": "How many customers live in Argentina?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Argentina'"}
+{"question": "What is the total amount invoiced to Argentina?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Argentina'"}
+{"question": "How many customers live in Italy?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Italy'"}
+{"question": "What is the total amount invoiced to Italy?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Italy'"}
+{"question": "How many customers live in Germany?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Germany'"}
+{"question": "What is the total amount invoiced to Germany?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Germany'"}
+{"question": "How many customers live in Austria?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Austria'"}
+{"question": "What is the total amount invoiced to Austria?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Austria'"}
+{"question": "How many customers live in United Kingdom?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'United Kingdom'"}
+{"question": "What is the total amount invoiced to United Kingdom?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'United Kingdom'"}
+{"question": "How many customers live in France?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'France'"}
+{"question": "What is the total amount invoiced to France?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'France'"}
+{"question": "How many customers live in Portugal?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Portugal'"}
+{"question": "What is the total amount invoiced to Portugal?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Portugal'"}
+{"question": "How many customers live in Ireland?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Ireland'"}
+{"question": "What is the total amount invoiced to Ireland?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Ireland'"}
+{"question": "How many customers live in India?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'India'"}
+{"question": "What is the total amount invoiced to India?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'India'"}
+{"question": "How many customers live in Hungary?", "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Hungary'"}
+{"question": "What is the total amount invoiced to Hungary?", "sql": "SELECT SUM(Total) FROM Invoice WHERE BillingCountry = 'Hungary'"}
+{"question": "Which customers are based in Helsinki?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Helsinki'"}
+{"question": "Which customers are based in Fort Worth?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Fort Worth'"}
+{"question": "Which customers are based in Dublin?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Dublin'"}
+{"question": "Which customers are based in Madison?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Madison'"}
+{"question": "Which customers are based in Porto?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Porto'"}
+{"question": "Which customers are based in Bangalore?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Bangalore'"}
+{"question": "Which customers are based in Winnipeg?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Winnipeg'"}
+{"question": "Which customers are based in Delhi?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Delhi'"}
+{"question": "Which customers are based in Warsaw?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Warsaw'"}
+{"question": "Which customers are based in Madrid?", "sql": "SELECT FirstName, LastName FROM Customer WHERE City = 'Madrid'"}
+{"question": "How many tracks are in the Alternative & Punk genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Alternative & Punk'"}
+{"question": "What is the average length of a Alternative & Punk track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Alternative & Punk'"}
+{"question": "How many tracks are in the Sci Fi & Fantasy genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Sci Fi & Fantasy'"}
+{"question": "What is the average length of a Sci Fi & Fantasy track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Sci Fi & Fantasy'"}
+{"question": "How many tracks are in the Hip Hop/Rap genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Hip Hop/Rap'"}
+{"question": "What is the average length of a Hip Hop/Rap track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Hip Hop/Rap'"}
+{"question": "How many tracks are in the Heavy Metal genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Heavy Metal'"}
+{"question": "What is the average length of a Heavy Metal track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Heavy Metal'"}
+{"question": "How many tracks are in the Rock genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Rock'"}
+{"question": "What is the average length of a Rock track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Rock'"}
+{"question": "How many tracks are in the Alternative genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Alternative'"}
+{"question": "What is the average length of a Alternative track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Alternative'"}
+{"question": "How many tracks are in the Rock And Roll genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Rock And Roll'"}
+{"question": "What is the average length of a Rock And Roll track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Rock And Roll'"}
+{"question": "How many tracks are in the Reggae genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Reggae'"}
+{"question": "What is the average length of a Reggae track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Reggae'"}
+{"question": "How many tracks are in the R&B/Soul genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'R&B/Soul'"}
+{"question": "What is the average length of a R&B/Soul track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'R&B/Soul'"}
+{"question": "How many tracks are in the World genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'World'"}
+{"question": "What is the average length of a World track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'World'"}
+{"question": "How many tracks are in the TV Shows genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'TV Shows'"}
+{"question": "What is the average length of a TV Shows track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'TV Shows'"}
+{"question": "How many tracks are in the Comedy genre?", "sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Comedy'"}
+{"question": "What is the average length of a Comedy track in milliseconds?", "sql": "SELECT AVG(t.Milliseconds) FROM Track t JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Comedy'"}
+{"question": "How many albums has Body Count released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Body Count'"}
+{"question": "How many tracks does Body Count have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Body Count'"}
+{"question": "How many albums has Karsh Kale released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Karsh Kale'"}
+{"question": "How many tracks does Karsh Kale have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Karsh Kale'"}
+{"question": "How many albums has David Coverdale released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'David Coverdale'"}
+{"question": "How many tracks does David Coverdale have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'David Coverdale'"}
+{"question": "How many albums has Velvet Revolver released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Velvet Revolver'"}
+{"question": "How many tracks does Velvet Revolver have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Velvet Revolver'"}
+{"question": "How many albums has Richard Marlow & The Choir of Trinity College, Cambridge released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Richard Marlow & The Choir of Trinity College, Cambridge'"}
+{"question": "How many tracks does Richard Marlow & The Choir of Trinity College, Cambridge have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Richard Marlow & The Choir of Trinity College, Cambridge'"}
+{"question": "How many albums has Los Hermanos released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Los Hermanos'"}
+{"question": "How many tracks does Los Hermanos have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Los Hermanos'"}
+{"question": "How many albums has Chicago Symphony Chorus, Chicago Symphony Orchestra & Sir Georg Solti released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Chicago Symphony Chorus, Chicago Symphony Orchestra & Sir Georg Solti'"}
+{"question": "How many tracks does Chicago Symphony Chorus, Chicago Symphony Orchestra & Sir Georg Solti have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Chicago Symphony Chorus, Chicago Symphony Orchestra & Sir Georg Solti'"}
+{"question": "How many albums has Olodum released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Olodum'"}
+{"question": "How many tracks does Olodum have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Olodum'"}
+{"question": "How many albums has JET released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'JET'"}
+{"question": "How many tracks does JET have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'JET'"}
+{"question": "How many albums has Royal Philharmonic Orchestra & Sir Thomas Beecham released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Royal Philharmonic Orchestra & Sir Thomas Beecham'"}
+{"question": "How many tracks does Royal Philharmonic Orchestra & Sir Thomas Beecham have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Royal Philharmonic Orchestra & Sir Thomas Beecham'"}
+{"question": "How many albums has Alberto Turco & Nova Schola Gregoriana released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Alberto Turco & Nova Schola Gregoriana'"}
+{"question": "How many tracks does Alberto Turco & Nova Schola Gregoriana have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Alberto Turco & Nova Schola Gregoriana'"}
+{"question": "How many albums has Caetano Veloso released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Caetano Veloso'"}
+{"question": "How many tracks does Caetano Veloso have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Caetano Veloso'"}
+{"question": "How many albums has Chico Buarque released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Chico Buarque'"}
+{"question": "How many tracks does Chico Buarque have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Chico Buarque'"}
+{"question": "How many albums has The Clash released?", "sql": "SELECT COUNT(*) FROM Album al JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'The Clash'"}
+{"question": "How many tracks does The Clash have?", "sql": "SELECT COUNT(*) FROM Track t JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'The Clash'"}
+{"question": "How many tracks are on the Classical 101 - The Basics playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Classical 101 - The Basics'"}
+{"question": "How many tracks are on the Brazilian Music playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Brazilian Music'"}
+{"question": "How many tracks are on the TV Shows playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'TV Shows'"}
+{"question": "How many tracks are on the Audiobooks playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Audiobooks'"}
+{"question": "How many tracks are on the On-The-Go 1 playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'On-The-Go 1'"}
+{"question": "How many tracks are on the Music Videos playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Music Videos'"}
+{"question": "How many tracks are on the Grunge playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Grunge'"}
+{"question": "How many tracks are on the Classical 101 - Deep Cuts playlist?", "sql": "SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Classical 101 - Deep Cuts'"}
+{"question": "How many tracks use the AAC audio file format?", "sql": "SELECT COUNT(*) FROM Track t JOIN MediaType m ON m.MediaTypeId = t.MediaTypeId WHERE m.Name = 'AAC audio file'"}
+{"question": "How many tracks use the MPEG audio file format?", "sql": "SELECT COUNT(*) FROM Track t JOIN MediaType m ON m.MediaTypeId = t.MediaTypeId WHERE m.Name = 'MPEG audio file'"}
+{"question": "How many tracks use the Purchased AAC audio file format?", "sql": "SELECT COUNT(*) FROM Track t JOIN MediaType m ON m.MediaTypeId = t.MediaTypeId WHERE m.Name = 'Purchased AAC audio file'"}
+{"question": "How many tracks use the Protected AAC audio file format?", "sql": "SELECT COUNT(*) FROM Track t JOIN MediaType m ON m.MediaTypeId = t.MediaTypeId WHERE m.Name = 'Protected AAC audio file'"}
+{"question": "How many tracks use the Protected MPEG-4 video file format?", "sql": "SELECT COUNT(*) FROM Track t JOIN MediaType m ON m.MediaTypeId = t.MediaTypeId WHERE m.Name = 'Protected MPEG-4 video file'"}
+{"question": "How many different genres are there?", "sql": "SELECT COUNT(*) FROM Genre"}
+{"question": "How many employees work here?", "sql": "SELECT COUNT(*) FROM Employee"}
+{"question": "How many playlists exist?", "sql": "SELECT COUNT(*) FROM Playlist"}
+{"question": "What is the longest track in milliseconds?", "sql": "SELECT MAX(Milliseconds) FROM Track"}
+{"question": "What is the shortest track in milliseconds?", "sql": "SELECT MIN(Milliseconds) FROM Track"}
+{"question": "What is the most expensive track price?", "sql": "SELECT MAX(UnitPrice) FROM Track"}
+{"question": "What is the largest single invoice?", "sql": "SELECT MAX(Total) FROM Invoice"}
+{"question": "How many invoices are there altogether?", "sql": "SELECT COUNT(*) FROM Invoice"}
+{"question": "Which genre has the fewest tracks?", "sql": "SELECT g.Name FROM Genre g JOIN Track t ON t.GenreId = g.GenreId GROUP BY g.GenreId ORDER BY COUNT(*) ASC LIMIT 1"}
+{"question": "Which album has the most tracks?", "sql": "SELECT al.Title FROM Album al JOIN Track t ON t.AlbumId = al.AlbumId GROUP BY al.AlbumId ORDER BY COUNT(*) DESC LIMIT 1"}
+{"question": "Which playlist has the most tracks?", "sql": "SELECT p.Name FROM Playlist p JOIN PlaylistTrack pt ON pt.PlaylistId = p.PlaylistId GROUP BY p.PlaylistId ORDER BY COUNT(*) DESC LIMIT 1"}
+{"question": "Which city has the most customers?", "sql": "SELECT City FROM Customer GROUP BY City ORDER BY COUNT(*) DESC LIMIT 1"}
+{"question": "Which employee supports the most customers?", "sql": "SELECT e.FirstName, e.LastName FROM Employee e JOIN Customer c ON c.SupportRepId = e.EmployeeId GROUP BY e.EmployeeId ORDER BY COUNT(*) DESC LIMIT 1"}
+{"question": "Which media type is used least often?", "sql": "SELECT m.Name FROM MediaType m JOIN Track t ON t.MediaTypeId = m.MediaTypeId GROUP BY m.MediaTypeId ORDER BY COUNT(*) ASC LIMIT 1"}
+{"question": "How many tracks cost less than a dollar?", "sql": "SELECT COUNT(*) FROM Track WHERE UnitPrice < 1.0"}
+{"question": "How many customers do not have a company listed?", "sql": "SELECT COUNT(*) FROM Customer WHERE Company IS NULL"}
+{"question": "How many tracks are longer than ten minutes?", "sql": "SELECT COUNT(*) FROM Track WHERE Milliseconds > 600000"}
+{"question": "How many albums are there?", "sql": "SELECT COUNT(*) FROM Album"}
+{"question": "List the names of all the genres.", "sql": "SELECT Name FROM Genre"}
+{"question": "How many invoice line items are there?", "sql": "SELECT COUNT(*) FROM InvoiceLine"}
+{"question": "What countries do customers come from?", "sql": "SELECT DISTINCT Country FROM Customer"}
+{"question": "How many customers has each support rep been assigned?", "sql": "SELECT e.FirstName, COUNT(*) FROM Employee e JOIN Customer c ON c.SupportRepId = e.EmployeeId GROUP BY e.EmployeeId"}
+{"question": "Which tracks have no composer listed?", "sql": "SELECT Name FROM Track WHERE Composer IS NULL"}
+{"question": "How much revenue came from each country?", "sql": "SELECT BillingCountry, SUM(Total) FROM Invoice GROUP BY BillingCountry"}
+{"question": "How many tracks are on each media type?", "sql": "SELECT m.Name, COUNT(*) FROM MediaType m JOIN Track t ON t.MediaTypeId = m.MediaTypeId GROUP BY m.MediaTypeId"}

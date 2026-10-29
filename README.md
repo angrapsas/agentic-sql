@@ -113,11 +113,28 @@ runs cheapest configurations first, so a run that dies partway through still
 leaves most of the chart, and rerunning the same command picks up from the last
 completed question.
 
+## Training the adapter
+
+```bash
+python scripts/make_training_data.py       # 164 pairs, verified against the database
+python scripts/train_adapter.py --out /content/drive/MyDrive/sql_checker/sql_adapter_2b
+```
+
+The generator fills templates with real values from the database, checks that
+every query runs and returns rows, and drops anything that overlaps the
+evaluation set. The training prompt is imported from the oneshot setup rather
+than written out again, so the adapter is trained on the same format it is later
+measured on.
+
+One known gap: the prompt asks the model to reply `CANNOT ANSWER` when the schema
+cannot answer a question, but none of the training pairs demonstrate that, since
+every pair has a working query. The adapter is therefore expected to do worse
+than the base model on the unanswerable questions, and that difference should not
+be read as fine-tuning having hurt.
+
 ## Status
 
-The dataset and harness are working, with 26 tests that run without a GPU. The 2b
-adapter has not been trained yet, so the adapter configurations will skip until it
-exists. The Anthropic configurations skip unless `ANTHROPIC_API_KEY` and
+The dataset and harness are working, with 26 tests that run without a GPU. The Anthropic configurations skip unless `ANTHROPIC_API_KEY` and
 `AGSQL_ANTHROPIC_MODEL` are set.
 
 One result from earlier work has not been explained and is worth knowing before
