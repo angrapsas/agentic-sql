@@ -1,0 +1,14 @@
+# core
+pyyaml>=6.0
+
+# transformers backend (the only path that can serve a LoRA adapter)
+torch>=2.0
+transformers>=4.44
+accelerate>=0.33
+peft>=0.12
+# only needed for 4-bit, i.e. the 4b bridge arm. CUDA only.
+bitsandbytes>=0.43 ; platform_system == "Linux"
+
+# optional backends, imported lazily. Install if you run those arms.
+# ollama>=0.3
+# anthropic>=0.40

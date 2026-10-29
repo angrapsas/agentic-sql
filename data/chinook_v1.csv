@@ -1,0 +1,44 @@
+id,question,gold_sql,answerable,category_id,category_name,bucket,gold_row_count,notes
+chinook-001,"Who composed the track ""'Round Midnight""?",SELECT Composer FROM Track WHERE Name = '''Round Midnight',True,1,Single-table lookup,vocabulary,1,
+chinook-002,What is the title of the album with AlbumId 100?,SELECT Title FROM Album WHERE AlbumId = 100,True,1,Single-table lookup,vocabulary,1,
+chinook-003,What city does the customer named Kara Nielsen live in?,SELECT City FROM Customer WHERE FirstName = 'Kara' AND LastName = 'Nielsen',True,1,Single-table lookup,vocabulary,1,
+chinook-004,How many customers are in Brazil?,SELECT COUNT(*) FROM Customer WHERE Country = 'Brazil',True,2,Filtered count,vocabulary,1,
+chinook-005,How many tracks cost more than one dollar?,SELECT COUNT(*) FROM Track WHERE UnitPrice > 1.0,True,2,Filtered count,vocabulary,1,
+chinook-006,How many invoices were billed to the USA?,SELECT COUNT(*) FROM Invoice WHERE BillingCountry = 'USA',True,2,Filtered count,vocabulary,1,
+chinook-007,What is the average invoice total?,SELECT AVG(Total) FROM Invoice,True,3,Aggregate,vocabulary,1,
+chinook-008,What is the total revenue across all invoices?,SELECT SUM(Total) FROM Invoice,True,3,Aggregate,vocabulary,1,
+chinook-009,What is the average track length in milliseconds?,SELECT AVG(Milliseconds) FROM Track,True,3,Aggregate,vocabulary,1,
+chinook-010,Which genre has the most tracks?,SELECT g.Name FROM Genre g JOIN Track t ON t.GenreId = g.GenreId GROUP BY g.GenreId ORDER BY COUNT(*) DESC LIMIT 1,True,4,Superlative / argmax,logic,1,
+chinook-011,Which country has the highest total sales?,SELECT BillingCountry FROM Invoice GROUP BY BillingCountry ORDER BY SUM(Total) DESC LIMIT 1,True,4,Superlative / argmax,logic,1,
+chinook-012,Which customer has spent the most money?,"SELECT c.FirstName, c.LastName FROM Customer c JOIN Invoice i ON i.CustomerId = c.CustomerId GROUP BY c.CustomerId ORDER BY SUM(i.Total) DESC LIMIT 1",True,4,Superlative / argmax,logic,1,
+chinook-013,Which artist has the most tracks?,SELECT ar.Name FROM Artist ar JOIN Album al ON al.ArtistId = ar.ArtistId JOIN Track t ON t.AlbumId = al.AlbumId GROUP BY ar.ArtistId ORDER BY COUNT(*) DESC LIMIT 1,True,5,Multi-hop join (3+ tables),vocabulary,1,
+chinook-014,How much total revenue did the artist 'Led Zeppelin' generate?,SELECT SUM(il.UnitPrice * il.Quantity) FROM InvoiceLine il JOIN Track t ON t.TrackId = il.TrackId JOIN Album al ON al.AlbumId = t.AlbumId JOIN Artist ar ON ar.ArtistId = al.ArtistId WHERE ar.Name = 'Led Zeppelin',True,5,Multi-hop join (3+ tables),vocabulary,1,
+chinook-015,Which genre generated the most revenue?,SELECT g.Name FROM Genre g JOIN Track t ON t.GenreId = g.GenreId JOIN InvoiceLine il ON il.TrackId = t.TrackId GROUP BY g.GenreId ORDER BY SUM(il.UnitPrice * il.Quantity) DESC LIMIT 1,True,5,Multi-hop join (3+ tables),vocabulary,1,
+chinook-016,Who does Jane Peacock report to?,"SELECT m.FirstName, m.LastName FROM Employee e JOIN Employee m ON e.ReportsTo = m.EmployeeId WHERE e.FirstName = 'Jane' AND e.LastName = 'Peacock'",True,6,Self-join,logic,1,
+chinook-017,How many employees report directly to Nancy Edwards?,SELECT COUNT(*) FROM Employee e JOIN Employee m ON e.ReportsTo = m.EmployeeId WHERE m.FirstName = 'Nancy' AND m.LastName = 'Edwards',True,6,Self-join,logic,1,
+chinook-018,Which employee has no manager?,"SELECT FirstName, LastName FROM Employee WHERE ReportsTo IS NULL",True,6,Self-join,logic,1,
+chinook-019,How many artists have no albums?,SELECT COUNT(*) FROM Artist ar WHERE NOT EXISTS (SELECT 1 FROM Album al WHERE al.ArtistId = ar.ArtistId),True,7,Negation / anti-join,logic,1,
+chinook-020,How many tracks have never been purchased?,SELECT COUNT(*) FROM Track t WHERE NOT EXISTS (SELECT 1 FROM InvoiceLine il WHERE il.TrackId = t.TrackId),True,7,Negation / anti-join,logic,1,
+chinook-021,How many tracks have no composer listed?,SELECT COUNT(*) FROM Track WHERE Composer IS NULL,True,7,Negation / anti-join,logic,1,
+chinook-022,How many tracks are in the playlist called 'Music'?,SELECT COUNT(*) FROM PlaylistTrack pt JOIN Playlist p ON p.PlaylistId = pt.PlaylistId WHERE p.Name = 'Music',True,8,Ambiguous entity,judgment,1,Two playlists are named 'Music' (ids 1 and 8). Gold counts tracks in both.
+chinook-023,How many playlists are named 'Music'?,SELECT COUNT(*) FROM Playlist WHERE Name = 'Music',True,8,Ambiguous entity,judgment,1,Tests whether the model notices the duplicate name.
+chinook-024,Who composed the track 'Black Dog'?,SELECT Composer FROM Track WHERE Name = 'Black Dog',True,8,Ambiguous entity,judgment,2,Two tracks are named 'Black Dog' with different Composer values. Gold returns both rows.
+chinook-025,In which year was total sales highest?,"SELECT STRFTIME('%Y', InvoiceDate) FROM Invoice GROUP BY 1 ORDER BY SUM(Total) DESC LIMIT 1",True,9,Temporal,logic,1,
+chinook-026,How many invoices were issued in 2023?,SELECT COUNT(*) FROM Invoice WHERE InvoiceDate >= '2023-01-01' AND InvoiceDate < '2024-01-01',True,9,Temporal,logic,1,
+chinook-027,Which month of 2023 had the highest total sales?,"SELECT STRFTIME('%m', InvoiceDate) FROM Invoice WHERE InvoiceDate >= '2023-01-01' AND InvoiceDate < '2024-01-01' GROUP BY 1 ORDER BY SUM(Total) DESC LIMIT 1",True,9,Temporal,logic,1,
+chinook-028,How many tracks are longer than the average track length?,SELECT COUNT(*) FROM Track WHERE Milliseconds > (SELECT AVG(Milliseconds) FROM Track),True,10,Nested comparison,logic,1,
+chinook-029,How many tracks are longer than the average length of tracks in their own genre?,SELECT COUNT(*) FROM Track t WHERE t.GenreId IS NOT NULL AND t.Milliseconds > (SELECT AVG(t2.Milliseconds) FROM Track t2 WHERE t2.GenreId = t.GenreId),True,10,Nested comparison,logic,1,
+chinook-030,How many customers spent more than the average customer?,"SELECT COUNT(*) FROM (SELECT CustomerId, SUM(Total) s FROM Invoice GROUP BY CustomerId) WHERE s > (SELECT AVG(s2) FROM (SELECT SUM(Total) s2 FROM Invoice GROUP BY CustomerId))",True,10,Nested comparison,logic,1,
+chinook-031,What percentage of total revenue comes from the Rock genre?,SELECT 100.0 * (SELECT SUM(il.UnitPrice * il.Quantity) FROM InvoiceLine il JOIN Track t ON t.TrackId = il.TrackId JOIN Genre g ON g.GenreId = t.GenreId WHERE g.Name = 'Rock') / (SELECT SUM(UnitPrice * Quantity) FROM InvoiceLine),True,11,Ratio / percentage,logic,1,
+chinook-032,What fraction of tracks are longer than five minutes?,SELECT 1.0 * SUM(CASE WHEN Milliseconds > 300000 THEN 1 ELSE 0 END) / COUNT(*) FROM Track,True,11,Ratio / percentage,logic,1,
+chinook-033,What percentage of customers are in the USA?,SELECT 100.0 * SUM(CASE WHEN Country = 'USA' THEN 1 ELSE 0 END) / COUNT(*) FROM Customer,True,11,Ratio / percentage,logic,1,
+chinook-034,Which tracks are the most expensive? List all of them.,SELECT Name FROM Track WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM Track),True,12,Ties,judgment,213,213 tracks tie at the maximum UnitPrice. Gold returns the full tie set.
+chinook-035,How many customers are tied for having the most invoices?,"SELECT COUNT(*) FROM (SELECT CustomerId, COUNT(*) c FROM Invoice GROUP BY CustomerId) WHERE c = (SELECT MAX(c2) FROM (SELECT COUNT(*) c2 FROM Invoice GROUP BY CustomerId))",True,12,Ties,judgment,1,58 customers tie at the maximum invoice count.
+chinook-036,What is the tempo in BPM of the track 'Black Dog'?,,False,13,Unanswerable,judgment,,"No tempo column exists. Correct behaviour is to refuse, not to answer."
+chinook-037,What is the release year of the album 'Let There Be Rock'?,,False,13,Unanswerable,judgment,,Album table has no year column. Correct behaviour is to refuse.
+chinook-038,How many times has the track 'Black Dog' been streamed?,,False,13,Unanswerable,judgment,,No play-count data exists. Correct behaviour is to refuse.
+chinook-039,What is the email address of the employee Jane Peacock's spouse?,,False,13,Unanswerable,judgment,,No spouse data exists. Correct behaviour is to refuse.
+chinook-040,How many songs are in the library?,SELECT COUNT(*) FROM Track,True,14,Vocabulary mismatch,vocabulary,1,
+chinook-041,How many musicians are in the database?,SELECT COUNT(*) FROM Artist,True,14,Vocabulary mismatch,vocabulary,1,
+chinook-042,"What is the length of the longest song, in minutes?",SELECT MAX(Milliseconds) / 60000.0 FROM Track,True,14,Vocabulary mismatch,vocabulary,1,Requires real division. Integer division (/60000) gives 88 instead of 88.1159.
+chinook-043,What is the cheapest price of any song?,SELECT MIN(UnitPrice) FROM Track,True,14,Vocabulary mismatch,vocabulary,1,

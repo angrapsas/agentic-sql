@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# built from source by data/verify_dataset.py, not committed
+data/Chinook.db
+data/chinook.sql
+
+# checkpoints are committed; their temp files are not
+results/*.tmp
+results/*.memory.json.tmp
+
+.DS_Store

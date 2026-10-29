@@ -1,0 +1,147 @@
+# The experiment grid. One entry per cell of the chart.
+#
+# Every arm runs the same dataset, which is the point: change one thing per arm
+# and the comparison means something. Arms are ordered cheap first, so a run that
+# dies partway still leaves most of the chart.
+#
+# Estimates assume a Colab T4 and a 2b model in fp16. Measured 4b numbers from
+# phase 3 were 25 s/question for the loop with thinking off and 128 s/question
+# with it on; 2b unquantized should be several times faster than that.
+
+dataset: chinook_v1
+
+defaults:
+  backend_args: {}
+  setup_args: {}
+
+arms:
+
+  # ---- the spine: each row changes one thing from the row above ----
+
+  no-model:
+    label: "1 no-model"
+    backend: none
+    setup: templates
+    note: "static decision logic in code. 0 min."
+
+  qwen2b-oneshot:
+    label: "2 model alone"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+    note: "no tools, no retries. ~1 min."
+
+  qwen2b-loop:
+    label: "3 loop untuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+    note: "same model, now with a tool loop. ~6 min."
+
+  qwen2b-loop-tuned:
+    label: "4 loop tuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+    note: "same loop, LoRA on. Needs the 2b adapter trained first. ~4 min."
+
+  # ---- thinking sweep ----
+
+  qwen2b-loop-think:
+    label: "3t loop untuned, thinking"
+    backend: hf
+    setup: loop
+    thinking: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+    note: "the expensive one. ~29 min."
+
+  qwen2b-loop-tuned-think:
+    label: "4t loop tuned, thinking"
+    backend: hf
+    setup: loop
+    thinking: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+    note: "does fine-tuning still add anything once thinking is on? ~25 min."
+
+  # ---- persistent memory sweep ----
+
+  qwen2b-loop-mem:
+    label: "3m loop untuned, memory"
+    backend: hf
+    setup: loop
+    thinking: false
+    memory: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+    note: "verified queries carried across questions. ~7 min."
+
+  qwen2b-loop-tuned-mem:
+    label: "4m loop tuned, memory"
+    backend: hf
+    setup: loop
+    thinking: false
+    memory: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+    note: "memory and fine-tuning are competing ways to make D persistent. ~5 min."
+
+  # ---- frontier ceiling ----
+
+  haiku-oneshot:
+    label: "5 haiku alone"
+    backend: anthropic
+    setup: oneshot
+    thinking: false
+    note: "needs ANTHROPIC_API_KEY and AGSQL_ANTHROPIC_MODEL. ~1 min."
+
+  haiku-loop:
+    label: "6 haiku loop"
+    backend: anthropic
+    setup: loop
+    thinking: false
+    note: "the ceiling. ~3 min."
+
+  haiku-loop-mem:
+    label: "6m haiku loop, memory"
+    backend: anthropic
+    setup: loop
+    thinking: false
+    memory: true
+    note: "~3 min."
+
+  # ---- bridge to phase 3, so this chart shares a row with the old results ----
+
+  qwen4b-loop:
+    label: "bridge 4b loop"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      quantize: true
+    note: "4-bit 4b, matching phase 3. Only for comparing to last week. ~13 min."
+
+  ollama-agent:
+    label: "bridge ollama agent"
+    backend: ollama
+    setup: loop
+    thinking: true
+    skip: true
+    backend_args:
+      model: qwen3.5-sql
+    note: >
+      Phase 3's agent scored far above the hand-written loop and the cause is
+      still unexplained. Skipped by default: Ollama needs a server running and
+      cannot serve the adapter at all. Enable only when deliberately chasing
+      that gap.
