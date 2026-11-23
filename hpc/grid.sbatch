@@ -2,7 +2,7 @@
 #SBATCH --job-name=agsql
 #SBATCH -N 1 -n 4
 #SBATCH --gpus=1
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 #SBATCH -t 12:00:00
 #SBATCH -o logs/%x-%A_%a.out
 # One array task per arm, so arms run in parallel on separate GPUs.

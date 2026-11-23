@@ -6,9 +6,10 @@ no internet. Run those from a laptop or the front-end.
 """
 import os
 import sys
+
 import yaml
 
-g = yaml.safe_load(open("configs/grid.yaml"))
+g = yaml.safe_load(open(os.environ.get("AGSQL_GRID", "configs/grid.yaml")))
 local = {n for n, a in g["arms"].items()
          if a.get("backend") in ("hf", "none") and not a.get("skip")}
 if os.environ.get("ARMS"):

@@ -2,7 +2,7 @@
 #SBATCH --job-name=agsql-train
 #SBATCH -N 1 -n 4
 #SBATCH --gpus=1
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 #SBATCH -t 1:00:00
 #SBATCH -o logs/%x-%j.out
 # Train an adapter into $AGSQL_ADAPTERS/$ADAPTER_NAME (default sql_adapter_2b).

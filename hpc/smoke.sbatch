@@ -2,7 +2,7 @@
 #SBATCH --job-name=agsql-smoke
 #SBATCH -N 1 -n 4
 #SBATCH --gpus=1
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 #SBATCH -t 1:30:00
 #SBATCH -o logs/%x-%j.out
 # One question through every local arm. Always before a real run.

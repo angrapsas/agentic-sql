@@ -1,0 +1,164 @@
+# Size ladder on chinook_v2 (DRAFT). Results go to $AGSQL_RESULTS/ladder.
+#
+# Every Qwen3.5 size, bf16, same hand-written loop. Untuned once; tuned three
+# times, each with an adapter trained on a different seed (and so a different
+# 85/15 split of train_v1), because stage 1 showed retraining alone moves
+# results by up to 4 questions. Report tuned as mean and range over seeds.
+#
+# Tuned adapters use train_v1 on purpose: when train_v2 exists, the same ladder
+# rerun gives a clean before/after on training data diversity.
+#
+# Ordered small and fast first.
+
+dataset: chinook_v2
+
+defaults:
+  backend_args: {}
+  setup_args: {}
+
+arms:
+
+  v2-no-model:
+    label: "templates"
+    backend: none
+    setup: templates
+
+  v2-0.8b-loop:
+    label: "0.8b loop untuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+
+  v2-0.8b-loop-tuned-s0:
+    label: "0.8b loop tuned s0"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+      adapter: ${AGSQL_ADAPTERS}/ladder_0.8b_s0
+
+  v2-0.8b-loop-tuned-s1:
+    label: "0.8b loop tuned s1"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+      adapter: ${AGSQL_ADAPTERS}/ladder_0.8b_s1
+
+  v2-0.8b-loop-tuned-s2:
+    label: "0.8b loop tuned s2"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+      adapter: ${AGSQL_ADAPTERS}/ladder_0.8b_s2
+
+  v2-2b-loop:
+    label: "2b loop untuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+
+  v2-2b-loop-tuned-s0:
+    label: "2b loop tuned s0"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/ladder_2b_s0
+
+  v2-2b-loop-tuned-s1:
+    label: "2b loop tuned s1"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/ladder_2b_s1
+
+  v2-2b-loop-tuned-s2:
+    label: "2b loop tuned s2"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/ladder_2b_s2
+
+  v2-4b-loop:
+    label: "4b loop untuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+
+  v2-4b-loop-tuned-s0:
+    label: "4b loop tuned s0"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/ladder_4b_s0
+
+  v2-4b-loop-tuned-s1:
+    label: "4b loop tuned s1"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/ladder_4b_s1
+
+  v2-4b-loop-tuned-s2:
+    label: "4b loop tuned s2"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/ladder_4b_s2
+
+  v2-9b-loop:
+    label: "9b loop untuned"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+
+  v2-9b-loop-tuned-s0:
+    label: "9b loop tuned s0"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/ladder_9b_s0
+
+  v2-9b-loop-tuned-s1:
+    label: "9b loop tuned s1"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/ladder_9b_s1
+
+  v2-9b-loop-tuned-s2:
+    label: "9b loop tuned s2"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/ladder_9b_s2

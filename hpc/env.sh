@@ -9,7 +9,7 @@ export WORK="${WORK:-/sciclone/data10/$USER/agsql}"
 
 export REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PYTHONPATH="$REPO/src"
-export AGSQL_RESULTS="$WORK/results"
+export AGSQL_RESULTS="${AGSQL_RESULTS:-$WORK/results}"
 export AGSQL_ADAPTERS="$WORK/adapters"
 export HF_HOME="$WORK/hf"
 export CONDA_PKGS_DIRS="$WORK/conda-pkgs"

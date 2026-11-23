@@ -27,7 +27,7 @@ from .setups import get_setup
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
-GRID = os.path.join(ROOT, "configs", "grid.yaml")
+GRID = os.environ.get("AGSQL_GRID", os.path.join(ROOT, "configs", "grid.yaml"))
 RESULTS = os.environ.get("AGSQL_RESULTS", os.path.join(ROOT, "results"))
 
 

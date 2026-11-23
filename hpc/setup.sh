@@ -18,9 +18,12 @@ python -m pip install -r "$REPO/requirements.txt" anthropic pytest
 # every model any arm or the training script loads, read from the grid
 MODELS=$(python - <<'PY'
 import yaml
-g = yaml.safe_load(open("configs/grid.yaml"))
-ids = {a["backend_args"]["model_id"] for a in g["arms"].values()
-       if a.get("backend") == "hf" and not a.get("skip")}
+import glob
+ids = set()
+for path in glob.glob("configs/*.yaml"):
+    g = yaml.safe_load(open(path))
+    ids |= {a["backend_args"]["model_id"] for a in (g.get("arms") or {}).values()
+            if a.get("backend") == "hf" and not a.get("skip")}
 print(" ".join(sorted(ids)))
 PY
 )
