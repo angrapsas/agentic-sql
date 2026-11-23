@@ -49,7 +49,7 @@ arms:
     thinking: false
     backend_args:
       model_id: Qwen/Qwen3.5-2B
-      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b
     note: "same loop, LoRA on. Needs the 2b adapter trained first. ~4 min."
 
   # ---- thinking sweep ----
@@ -70,7 +70,7 @@ arms:
     thinking: true
     backend_args:
       model_id: Qwen/Qwen3.5-2B
-      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b
     note: "does fine-tuning still add anything once thinking is on? ~25 min."
 
   # ---- persistent memory sweep ----
@@ -93,7 +93,7 @@ arms:
     memory: true
     backend_args:
       model_id: Qwen/Qwen3.5-2B
-      adapter: /content/drive/MyDrive/sql_checker/sql_adapter_2b
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b
     note: "both the adapter and memory on, to see whether they add up. ~5 min."
 
   # ---- frontier ceiling ----
@@ -119,6 +119,79 @@ arms:
     thinking: false
     memory: true
     note: "~3 min."
+
+  # ---- stage 1: adapter verification and a fair thinking budget ----
+  # New names, so these get their own result files and never resume into
+  # results produced under a different configuration.
+
+  qwen2b-oneshot-tuned:
+    label: "2+ model alone, tuned"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b
+    note: "the adapter in the format it was trained on. ~1 min."
+
+  qwen2b-oneshot-tuned-e3h:
+    label: "2+ alone, tuned 3ep (held-out split)"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b_e3h
+    note: "trained on 85% of pairs, 3 epochs. Compare with e1h."
+
+  qwen2b-oneshot-tuned-e1h:
+    label: "2+ alone, tuned 1ep (held-out split)"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b_e1h
+    note: "same split, 1 epoch. Memorisation check."
+
+  qwen2b-loop-tuned-e3h:
+    label: "4 loop, tuned 3ep (held-out split)"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b_e3h
+
+  qwen2b-loop-tuned-e1h:
+    label: "4 loop, tuned 1ep (held-out split)"
+    backend: hf
+    setup: loop
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b_e1h
+
+  qwen2b-loop-think-1k:
+    label: "3t loop untuned, thinking 1024"
+    backend: hf
+    setup: loop
+    thinking: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      max_new_tokens: 1024
+    note: "400 tokens cut most calls off mid-thought. ~2-3 h."
+
+  qwen2b-loop-tuned-think-1k:
+    label: "4t loop tuned, thinking 1024"
+    backend: hf
+    setup: loop
+    thinking: true
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/sql_adapter_2b
+      max_new_tokens: 1024
+    note: "~2-3 h."
 
   # ---- bridge to phase 3, so this chart shares a row with the old results ----
 

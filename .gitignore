@@ -12,3 +12,4 @@ results/*.tmp
 results/*.memory.json.tmp
 
 .DS_Store
+logs/

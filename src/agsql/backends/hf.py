@@ -18,6 +18,9 @@ class HFBackend:
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
+        if adapter:
+            # grid.yaml writes ${AGSQL_ADAPTERS}/name so one grid works on Colab and HPC
+            adapter = os.path.expandvars(adapter)
         self.thinking = thinking
         # thinking needs room: reasoning comes out of the same budget as the SQL,
         # and truncating mid-reasoning looks exactly like "the model wrote no SQL"

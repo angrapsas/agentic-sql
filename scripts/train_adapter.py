@@ -39,6 +39,10 @@ def main():
     ap.add_argument("--max-len", type=int, default=512)
     ap.add_argument("--quantize", action="store_true",
                     help="4-bit. Needed for 4b and up on a 16GB card.")
+    ap.add_argument("--val-frac", type=float, default=0.0,
+                    help="hold out this fraction of pairs: logs validation loss "
+                         "every epoch and scores execution accuracy on them after")
+    ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
     import torch
@@ -53,7 +57,9 @@ def main():
     if not pairs:
         raise SystemExit(f"no training pairs in {args.train}")
     tables = ", ".join(table_names())
-    print(f"{len(pairs)} training pairs | model {args.model_id}")
+    train_pairs, val_pairs = split_pairs(pairs, args.val_frac, args.seed)
+    print(f"{len(train_pairs)} training pairs, {len(val_pairs)} held out "
+          f"| model {args.model_id} | epochs {args.epochs}")
 
     tok = AutoTokenizer.from_pretrained(args.model_id)
     if tok.pad_token is None:
@@ -81,6 +87,7 @@ def main():
                         "gate_proj", "up_proj", "down_proj"])
     model = get_peft_model(model, lora)
     model.print_trainable_parameters()
+    print_lora_coverage(model)
 
     class SQLPairs(Dataset):
         """Prompt tokens are masked so the loss only covers the SQL."""
@@ -118,7 +125,8 @@ def main():
                 [b["labels"] + [-100] * (n - len(b["labels"])) for b in batch]),
         }
 
-    ds = SQLPairs(pairs)
+    ds = SQLPairs(train_pairs)
+    val_ds = SQLPairs(val_pairs) if val_pairs else None
     print(f"tokenised, median length {sorted(len(r['input_ids']) for r in ds.rows)[len(ds)//2]}")
 
     targs = TrainingArguments(
@@ -133,10 +141,13 @@ def main():
         fp16=not ampere,
         bf16=ampere,
         optim="adamw_torch",
+        seed=args.seed,
+        eval_strategy="epoch" if val_ds else "no",
+        per_device_eval_batch_size=args.batch,
     )
 
     trainer = Trainer(model=model, args=targs, train_dataset=ds,
-                      data_collator=collate)
+                      eval_dataset=val_ds, data_collator=collate)
 
     # With fp16 the GradScaler needs fp32 parameters to scale, and PEFT leaves
     # the adapter weights in the model's dtype. Without this the first backward
@@ -151,9 +162,83 @@ def main():
     os.makedirs(args.out, exist_ok=True)
     model.save_pretrained(args.out)
     tok.save_pretrained(args.out)
+
+    # Loss says nothing about whether the SQL is right. Execute it.
+    model.config.use_cache = True
+    model.eval()
+    report = {"model_id": args.model_id, "epochs": args.epochs,
+              "n_train": len(train_pairs), "n_val": len(val_pairs),
+              "seed": args.seed, "log": trainer.state.log_history}
+    for name, subset in (("train", train_pairs[:40]), ("val", val_pairs)):
+        if not subset:
+            continue
+        ok = sum(execution_match(generate_sql(model, tok, PROMPT, tables,
+                                              p["question"], torch), p["sql"])
+                 for p in subset)
+        report[f"{name}_exec_acc"] = ok / len(subset)
+        print(f"{name} execution accuracy: {ok}/{len(subset)}")
+    with open(os.path.join(args.out, "train_report.json"), "w") as f:
+        json.dump(report, f, indent=1, default=str)
     print(f"\nadapter saved to {args.out}")
     print("point the grid's adapter path at it, then:")
     print("  python -m agsql.cli run --arm qwen2b-loop-tuned --smoke")
+
+
+def split_pairs(pairs, frac, seed):
+    """Deterministic held-out split. Same seed and file give the same split, so
+    adapters trained for different epochs are scored on the same questions."""
+    if frac <= 0:
+        return list(pairs), []
+    import random
+    idx = list(range(len(pairs)))
+    random.Random(seed).shuffle(idx)
+    n_val = max(1, round(len(pairs) * frac))
+    val = set(idx[:n_val])
+    return ([p for i, p in enumerate(pairs) if i not in val],
+            [p for i, p in enumerate(pairs) if i in val])
+
+
+def print_lora_coverage(model):
+    """Which projections got an adapter, and in how many layers. Qwen3.5 mixes
+    full-attention and linear-attention layers with different module names, so
+    target_modules can silently miss most of the attention."""
+    import re
+    from collections import Counter
+    hits = Counter()
+    for name, mod in model.named_modules():
+        if hasattr(mod, "lora_A") and len(getattr(mod, "lora_A", {})):
+            hits[re.sub(r"\.\d+\.", ".N.", name).split("base_model.model.")[-1]] += 1
+    print("LoRA coverage (module: layers):")
+    for k, v in sorted(hits.items()):
+        print(f"  {k}: {v}")
+
+
+def generate_sql(model, tok, prompt_tmpl, tables, question, torch):
+    from agsql.grading import extract_sql
+    p = tok.apply_chat_template(
+        [{"role": "user", "content": prompt_tmpl.format(tables=tables, question=question)}],
+        tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    ids = tok(p, return_tensors="pt").to(model.device)
+    with torch.no_grad():
+        out = model.generate(**ids, max_new_tokens=150, do_sample=False,
+                             pad_token_id=tok.eos_token_id)
+    text = tok.decode(out[0][ids["input_ids"].shape[1]:], skip_special_tokens=True)
+    return extract_sql(text)
+
+
+def execution_match(sql, gold):
+    """Same rows as the gold query, order ignored. Errors count as wrong."""
+    import sqlite3
+    from agsql.dataset import DB_PATH
+    con = sqlite3.connect(DB_PATH)
+    try:
+        got = sorted(map(repr, con.execute(sql).fetchall()))
+        want = sorted(map(repr, con.execute(gold).fetchall()))
+        return got == want
+    except Exception:
+        return False
+    finally:
+        con.close()
 
 
 if __name__ == "__main__":
