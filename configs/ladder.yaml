@@ -162,3 +162,99 @@ arms:
     backend_args:
       model_id: Qwen/Qwen3.5-9B
       adapter: ${AGSQL_ADAPTERS}/ladder_9b_s2
+
+  # ---- no-loop baseline: same models, one shot, no tools ----
+
+  v2-0.8b-oneshot:
+    label: "0.8b one-shot untuned"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+
+  v2-0.8b-oneshot-tuned-s0:
+    label: "0.8b one-shot tuned s0"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-0.8B
+      adapter: ${AGSQL_ADAPTERS}/ladder_0.8b_s0
+
+  v2-2b-oneshot:
+    label: "2b one-shot untuned"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+
+  v2-2b-oneshot-tuned-s0:
+    label: "2b one-shot tuned s0"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+      adapter: ${AGSQL_ADAPTERS}/ladder_2b_s0
+
+  v2-4b-oneshot:
+    label: "4b one-shot untuned"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+
+  v2-4b-oneshot-tuned-s0:
+    label: "4b one-shot tuned s0"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/ladder_4b_s0
+
+  v2-9b-oneshot:
+    label: "9b one-shot untuned"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+
+  v2-9b-oneshot-tuned-s0:
+    label: "9b one-shot tuned s0"
+    backend: hf
+    setup: oneshot
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/ladder_9b_s0
+
+  # ---- frontier reference, run from a laptop (API, no GPU) ----
+  # Same conditions as the small models: one-shot and the same loop. The exact
+  # model string is recorded here so the paper can name it. Change it if you
+  # want the Haiku version phase 4 used; v2 resets comparability anyway.
+
+  v2-haiku-oneshot:
+    label: "haiku one-shot"
+    backend: anthropic
+    setup: oneshot
+    backend_args:
+      model_id: claude-haiku-5-5
+
+  v2-haiku-loop:
+    label: "haiku loop"
+    backend: anthropic
+    setup: loop
+    backend_args:
+      model_id: claude-haiku-5-5
+
+  v2-sonnet-oneshot:
+    label: "sonnet one-shot (ceiling)"
+    backend: anthropic
+    setup: oneshot
+    backend_args:
+      model_id: claude-sonnet-5-5
