@@ -60,10 +60,13 @@ COLUMNS = {
 def build_db():
     if not os.path.exists(SRC_DB):
         sys.exit("data/Chinook.db missing: run python data/verify_dataset.py first")
-    if os.path.exists(NEW_DB):
-        os.remove(NEW_DB)
+    # Build beside the real file and swap it in with one atomic rename: the folder
+    # is shared between clusters, and a job may be reading the database right now.
+    tmp = NEW_DB + f".tmp{os.getpid()}"
+    if os.path.exists(tmp):
+        os.remove(tmp)
     src = sqlite3.connect(SRC_DB)
-    dst = sqlite3.connect(NEW_DB)
+    dst = sqlite3.connect(tmp)
     src.backup(dst)
     src.close()
     dst.execute("PRAGMA legacy_alter_table = OFF")
@@ -82,7 +85,9 @@ def build_db():
         leftovers += [f"{t}.{c[1]}" for c in dst.execute(f'PRAGMA table_info("{t}")') if c[1] in COLUMNS]
     dst.close()
     if leftovers:
+        os.remove(tmp)
         sys.exit(f"old names survived: {leftovers}")
+    os.replace(tmp, NEW_DB)
     print(f"wrote {NEW_DB}")
 
 
