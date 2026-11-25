@@ -30,6 +30,12 @@ def load(name="chinook_v1"):
     path = os.path.join(DATA_DIR, f"{name}.json")
     with open(path) as f:
         data = json.load(f)
+    # A dataset written for a renamed schema says which database it needs.
+    # Grading it against the wrong one fails every question silently, so refuse.
+    need = data.get("db_file", "Chinook.db")
+    if os.path.basename(DB_PATH) != need:
+        raise SystemExit(f"{name} needs {need} but AGSQL_DB points at {DB_PATH}. "
+                         f"Set AGSQL_DB to data/{need}.")
     return [Question(q) for q in data["questions"]]
 
 

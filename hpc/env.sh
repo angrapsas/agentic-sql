@@ -11,6 +11,8 @@ export REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PYTHONPATH="$REPO/src"
 export AGSQL_RESULTS="${AGSQL_RESULTS:-$WORK/results}"
 export AGSQL_ADAPTERS="$WORK/adapters"
+# the database the harness grades against; renamed runs set this to Chinook_renamed.db
+export AGSQL_DB="${AGSQL_DB:-$REPO/data/Chinook.db}"
 export HF_HOME="$WORK/hf"
 export CONDA_PKGS_DIRS="$WORK/conda-pkgs"
 ENV_PREFIX="$WORK/env"
