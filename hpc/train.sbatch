@@ -16,4 +16,8 @@ set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 source hpc/env.sh
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+# Which GPU we got, and whether something else is already on it. Astral has
+# placed jobs on a GPU another process was using, which ends in out-of-memory.
+echo "host $(hostname) CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-unset}"
+nvidia-smi --query-gpu=index,name,memory.used,memory.total --format=csv,noheader || true
 python scripts/train_adapter.py --out "$AGSQL_ADAPTERS/${ADAPTER_NAME:-sql_adapter_2b}" "${ARGS[@]}"
