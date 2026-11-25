@@ -3,8 +3,9 @@
 #
 #   bash hpc/run_arms.sh ladder  v2-2b-schema,v2-4b-schema
 #   bash hpc/run_arms.sh renamed rn-2b-schema,rn-4b-schema
+#   bash hpc/run_arms.sh pipeline pl-4b-c1,pl-4b-c2,pl-4b-c3,pl-4b-c4,pl-4b-g1
 #
-# Picks the grid, the results folder and, for renamed, the renamed database.
+# Picks the grid, the results folder and, for any *renamed grid, the renamed database.
 # Arms whose adapters do not exist yet will fail the smoke test; train first.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -12,11 +13,11 @@ cd "$(dirname "$0")/.."
 mkdir -p logs
 export AGSQL_GRID=configs/$1.yaml
 export AGSQL_RESULTS=/sciclone/data10/$USER/agsql/results/$1
+[ -f "$AGSQL_GRID" ] || { echo "no such grid: $AGSQL_GRID"; exit 1; }
 case $1 in
-  renamed) export AGSQL_DB=$PWD/data/Chinook_renamed.db
-           [ -f "$AGSQL_DB" ] || (source hpc/env.sh >/dev/null 2>&1; python data/build_renamed.py db) ;;
-  ladder)  export AGSQL_DB=$PWD/data/Chinook.db ;;
-  *) echo "grid must be ladder or renamed"; exit 1 ;;
+  *renamed) export AGSQL_DB=$PWD/data/Chinook_renamed.db
+            [ -f "$AGSQL_DB" ] || (source hpc/env.sh >/dev/null 2>&1; python data/build_renamed.py db) ;;
+  *)        export AGSQL_DB=$PWD/data/Chinook.db ;;
 esac
 export ARMS=$2
 N=$(source hpc/env.sh >/dev/null 2>&1; python hpc/arms.py -n | wc -l)

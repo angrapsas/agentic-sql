@@ -63,6 +63,7 @@ def run_arm(name, fn, questions, out=None, resume=True, verbose=True,
             "queries": r.get("queries", 0),
             "queries_distinct": r.get("queries_distinct", r.get("queries", 0)),
             "errors": r.get("errors", 0),
+            "trace": r.get("trace"),
         }
         results.append(row)
 

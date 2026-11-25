@@ -27,4 +27,4 @@ def available():
     return sorted(REGISTRY)
 
 
-from . import templates, oneshot, oneshot_schema, loop  # noqa: E402,F401
+from . import templates, oneshot, oneshot_schema, loop, pipeline  # noqa: E402,F401

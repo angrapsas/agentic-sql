@@ -1,0 +1,209 @@
+# Component study, v1 (see docs/component_study.md). Dataset: chinook_v2.
+# One stage at a time goes from hand-written code to a model, in the order
+# c0 (all code) -> c1 router -> c2 + generator -> c3 + linker -> c4 + repair,
+# plus g1, the generator alone. Model stages are prompted, untuned, in v1.
+# Haiku arms run from a laptop; Qwen arms on the cluster.
+
+
+dataset: chinook_v2
+
+defaults:
+  backend_args: {}
+  setup_args: {}
+
+arms:
+
+  pl-c0:
+    label: "pipeline all code"
+    backend: none
+    setup: pipeline
+
+  pl-haiku-c1:
+    label: "haiku c1 router"
+    backend: anthropic
+    setup: pipeline
+    backend_args:
+      model_id: claude-haiku-5-5
+    setup_args:
+      router: model
+      linker: code
+      generator: code
+      repair: code
+
+  pl-haiku-c2:
+    label: "haiku c2 router+generator"
+    backend: anthropic
+    setup: pipeline
+    backend_args:
+      model_id: claude-haiku-5-5
+    setup_args:
+      router: model
+      linker: code
+      generator: model
+      repair: code
+
+  pl-haiku-c3:
+    label: "haiku c3 router+linker+generator"
+    backend: anthropic
+    setup: pipeline
+    backend_args:
+      model_id: claude-haiku-5-5
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: code
+
+  pl-haiku-c4:
+    label: "haiku c4 all model"
+    backend: anthropic
+    setup: pipeline
+    backend_args:
+      model_id: claude-haiku-5-5
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: model
+
+  pl-haiku-g1:
+    label: "haiku g1 generator only"
+    backend: anthropic
+    setup: pipeline
+    backend_args:
+      model_id: claude-haiku-5-5
+    setup_args:
+      router: code
+      linker: code
+      generator: model
+      repair: code
+
+  pl-4b-c1:
+    label: "4b c1 router"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+    setup_args:
+      router: model
+      linker: code
+      generator: code
+      repair: code
+
+  pl-4b-c2:
+    label: "4b c2 router+generator"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+    setup_args:
+      router: model
+      linker: code
+      generator: model
+      repair: code
+
+  pl-4b-c3:
+    label: "4b c3 router+linker+generator"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: code
+
+  pl-4b-c4:
+    label: "4b c4 all model"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: model
+
+  pl-4b-g1:
+    label: "4b g1 generator only"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+    setup_args:
+      router: code
+      linker: code
+      generator: model
+      repair: code
+
+  pl-9b-c1:
+    label: "9b c1 router"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+    setup_args:
+      router: model
+      linker: code
+      generator: code
+      repair: code
+
+  pl-9b-c2:
+    label: "9b c2 router+generator"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+    setup_args:
+      router: model
+      linker: code
+      generator: model
+      repair: code
+
+  pl-9b-c3:
+    label: "9b c3 router+linker+generator"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: code
+
+  pl-9b-c4:
+    label: "9b c4 all model"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+    setup_args:
+      router: model
+      linker: model
+      generator: model
+      repair: model
+
+  pl-9b-g1:
+    label: "9b g1 generator only"
+    backend: hf
+    setup: pipeline
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+    setup_args:
+      router: code
+      linker: code
+      generator: model
+      repair: code
