@@ -13,3 +13,4 @@ results/*.memory.json.tmp
 
 .DS_Store
 logs/
+data/Chinook_renamed.db
