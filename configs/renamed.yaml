@@ -164,3 +164,45 @@ arms:
     backend_args:
       model_id: Qwen/Qwen3.5-9B
       adapter: ${AGSQL_ADAPTERS}/renamed_9b_s2
+
+  # ---- one-shot with the full schema (tables and columns): memory of the
+  # schema gives no advantage here. Untuned only: adapters were trained on the
+  # table-names-only prompt, so a tuned arm here would mix in a prompt change.
+
+  rn-2b-schema:
+    label: "2b one-shot full schema (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-2B
+
+  rn-4b-schema:
+    label: "4b one-shot full schema (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+
+  rn-9b-schema:
+    label: "9b one-shot full schema (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+
+  rn-haiku-schema:
+    label: "haiku one-shot full schema (renamed)"
+    backend: anthropic
+    setup: oneshot_schema
+    backend_args:
+      model_id: claude-haiku-5-5
+
+  rn-sonnet-schema:
+    label: "sonnet one-shot full schema (renamed)"
+    backend: anthropic
+    setup: oneshot_schema
+    backend_args:
+      model_id: claude-sonnet-5-5
