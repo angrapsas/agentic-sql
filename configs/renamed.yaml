@@ -206,3 +206,60 @@ arms:
     setup: oneshot_schema
     backend_args:
       model_id: claude-sonnet-5-5
+
+  # ---- full-schema one-shot, TUNED: adapters trained on the same full-schema
+  # prompt they are evaluated with (train_adapter.py --prompt schema).
+
+  rn-4b-schema-tuned-s0:
+    label: "4b full schema tuned s0 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_4b_s0
+
+  rn-4b-schema-tuned-s1:
+    label: "4b full schema tuned s1 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_4b_s1
+
+  rn-4b-schema-tuned-s2:
+    label: "4b full schema tuned s2 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-4B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_4b_s2
+
+  rn-9b-schema-tuned-s0:
+    label: "9b full schema tuned s0 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_9b_s0
+
+  rn-9b-schema-tuned-s1:
+    label: "9b full schema tuned s1 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_9b_s1
+
+  rn-9b-schema-tuned-s2:
+    label: "9b full schema tuned s2 (renamed)"
+    backend: hf
+    setup: oneshot_schema
+    thinking: false
+    backend_args:
+      model_id: Qwen/Qwen3.5-9B
+      adapter: ${AGSQL_ADAPTERS}/renamed_schema_9b_s2

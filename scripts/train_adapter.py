@@ -43,6 +43,10 @@ def main():
                     help="hold out this fraction of pairs: logs validation loss "
                          "every epoch and scores execution accuracy on them after")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--prompt", choices=("tables", "schema"), default="tables",
+                    help="tables: the oneshot prompt (table names only). schema: the "
+                         "oneshot_schema prompt (every table and its columns). Train in "
+                         "the format the adapter will be evaluated in.")
     args = ap.parse_args()
 
     import torch
@@ -51,12 +55,18 @@ def main():
                               TrainingArguments)
     from peft import LoraConfig, get_peft_model
 
-    from agsql.setups.oneshot import PROMPT, table_names
+    from agsql.setups.oneshot import PROMPT as TABLES_PROMPT, table_names
+    from agsql.setups.oneshot_schema import PROMPT as SCHEMA_PROMPT, schema_text
 
     pairs = [json.loads(l) for l in open(args.train)]
     if not pairs:
         raise SystemExit(f"no training pairs in {args.train}")
-    tables = ", ".join(table_names())
+    if args.prompt == "schema":
+        schema = schema_text()
+        fill = lambda q: SCHEMA_PROMPT.format(schema=schema, question=q)  # noqa: E731
+    else:
+        tables = ", ".join(table_names())
+        fill = lambda q: TABLES_PROMPT.format(tables=tables, question=q)  # noqa: E731
     train_pairs, val_pairs = split_pairs(pairs, args.val_frac, args.seed)
     print(f"{len(train_pairs)} training pairs, {len(val_pairs)} held out "
           f"| model {args.model_id} | epochs {args.epochs}")
@@ -97,7 +107,7 @@ def main():
             for p in pairs:
                 prompt = tok.apply_chat_template(
                     [{"role": "user",
-                      "content": PROMPT.format(tables=tables, question=p["question"])}],
+                      "content": fill(p["question"])}],
                     tokenize=False, add_generation_prompt=True, enable_thinking=False)
                 target = p["sql"] + tok.eos_token
                 pi = tok(prompt, add_special_tokens=False)["input_ids"]
@@ -168,11 +178,11 @@ def main():
     model.eval()
     report = {"model_id": args.model_id, "epochs": args.epochs,
               "n_train": len(train_pairs), "n_val": len(val_pairs),
-              "seed": args.seed, "log": trainer.state.log_history}
+              "seed": args.seed, "prompt": args.prompt, "log": trainer.state.log_history}
     for name, subset in (("train", train_pairs[:40]), ("val", val_pairs)):
         if not subset:
             continue
-        ok = sum(execution_match(generate_sql(model, tok, PROMPT, tables,
+        ok = sum(execution_match(generate_sql(model, tok, fill,
                                               p["question"], torch), p["sql"])
                  for p in subset)
         report[f"{name}_exec_acc"] = ok / len(subset)
@@ -213,10 +223,10 @@ def print_lora_coverage(model):
         print(f"  {k}: {v}")
 
 
-def generate_sql(model, tok, prompt_tmpl, tables, question, torch):
+def generate_sql(model, tok, fill, question, torch):
     from agsql.grading import extract_sql
     p = tok.apply_chat_template(
-        [{"role": "user", "content": prompt_tmpl.format(tables=tables, question=question)}],
+        [{"role": "user", "content": fill(question)}],
         tokenize=False, add_generation_prompt=True, enable_thinking=False)
     ids = tok(p, return_tensors="pt").to(model.device)
     with torch.no_grad():
